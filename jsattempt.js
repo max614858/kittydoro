@@ -14,7 +14,11 @@ document.getElementById("timer-style").addEventListener("click", function(event)
 document.getElementById("countInput").addEventListener('input', function(event) {
   askingMinutes = (event.target.value)
   console.log(askingMinutes)
-  if (isNaN(askingMinutes) || askingMinutes <= 0 || askingMinutes == "") {
+  if (askingMinutes >= 9999) {
+    askingMinutes = 9999
+    document.getElementById("countInput").value = "9999"
+  }
+  if (isNaN(askingMinutes) || askingMinutes <= 0 || askingMinutes == "" ) {
     document.getElementById("timer-style").textContent = "00" + ":00";
     document.getElementById("startButton").disabled = true;
   } 
@@ -66,6 +70,10 @@ document.getElementById("startButton").addEventListener('click', function(event)
       break;
   }
 })
+
+document.getElementById('colorWheel').addEventListener('change', function() {
+  document.getElementById("mainbody").style.backgroundColor = this.value;
+});
 
 function countdown(count) {
   if (count > 0 && onoroff != 1) {
