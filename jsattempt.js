@@ -88,10 +88,12 @@ function countdown(count) {
         document.getElementById("countInput").value = "great work!"
       }
       if (count % 60 >= 10) {
-        document.getElementById("timer-style").textContent = Math.trunc(count/60) + ":" + count % 60
+        document.getElementById("timer-style").textContent = Math.trunc(count/60) + ":" + count % 60;
+        document.getElementById("webTitle").innerHTML = Math.trunc(count/60) + ":" + count % 60 + " - kittydoro"
       }
       else {
-        document.getElementById("timer-style").textContent = Math.trunc(count/60) + ":" + "0" + count % 60
+        document.getElementById("timer-style").textContent = Math.trunc(count/60) + ":" + "0" + count % 60;
+        document.getElementById("webTitle").innerHTML = Math.trunc(count/60) + ":" + count % 60 + " - kittydoro";
       }
       console.log(count);
       if (document.getElementById("countInput").value.length <= 11) {
