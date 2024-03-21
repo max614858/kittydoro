@@ -31,7 +31,7 @@ h1 {
 body {
   display: flex;
   flex-direction: column;
-  background-color: #1c2256;
+  background-color: rgb(255, 135, 145);
   margin: 0rem;
   overflow: hidden;
   align-items: center;
@@ -60,6 +60,7 @@ body {
   transform: scale(1);
   letter-spacing: 0;
   transition: letter-spacing 0.08s ease-out, transform 0.08s ease-out, background-color 0.08s ease-out;
+  border: none;
 }
 
 .startButtonC:hover {
@@ -84,6 +85,7 @@ body {
   padding-left: 20px;
   text-align: left;
   font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+  border: none;
 }
 
 input::placeholder {

@@ -71,9 +71,13 @@ document.getElementById("startButton").addEventListener('click', function(event)
   }
 })
 
+
 document.getElementById('colorWheel').addEventListener('change', function() {
   document.getElementById("mainbody").style.backgroundColor = this.value;
 });
+
+document.getElementById('colorWheel').value = '#FF8791';
+
 
 function countdown(count) {
   if (count > 0 && onoroff != 1) {
