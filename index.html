@@ -1,189 +1,28 @@
 <!DOCTYPE html>
 <html>
-  <style>
-    
-    body {
-      background-color: rgb(255, 182, 193);
-      background-image: url("study-images/kitty-151949_1280.png");
-      height: 1300px;
-      background-repeat: no-repeat;
-      background-position: 20px 18px;
-    }
-
-    .main-name {
-      font-family: Arial, Helvetica, sans-serif;
-      font-weight: bold;
-      font-size: 70px;
-      color: rgb(0, 0, 0);
-      margin: 0;
-      margin-left: 10px;
-      cursor: pointer;
-    }
-
-    .upper-title {
-      display: inline-block;
-    }
-
-    .study-box {
-      width: 650px;
-      height: 480px;
-      background-color: rgb(252, 173, 185);
-      margin-left: 950px;
-      margin-top: 0px;
-      border-radius: 40px;
-      border-style: none;
-    }
-
-    .st-box-title {
-      font-family: Arial, Helvetica, sans-serif;
-      font-size: 80px;
-      color: rgb(255, 255, 255);
-      text-align: center;
-      background-color: none;
-      margin-top: 28px;
-      border-radius: 0px;
-      text-shadow: 2px 1px 2px black;
-      padding-bottom: 8px;
-    
-
-      
-    }
-
-    .timer-counter {
-      font-family: Arial, Helvetica, sans-serif;
-      font-size: 190px;
-      text-align: center;
-      margin-top: 10px;
-      font-weight: bold;
-      color: white;
-      -webkit-text-stroke-width: 3px;
-      -webkit-text-stroke-color: black;
-      background-color: none;
-      border-color: rgb(255, 255, 255);
-
-
-  
-
-    }
-
-    .start-button {
-      margin-top: 24px;
-      text-align: center;
-      width: 325px;
-      height: 80px;
-      background-color: rgb(255, 164, 178);
-      border-style: none;
-      border-top-left-radius: 30px;
-      border-bottom-left-radius: 30px;
-      border-width: 1px;
-      cursor: pointer;
-      font-family: Arial, Helvetica, sans-serif;
-      font-size: 70px;
-      padding-bottom: 90px;
-
-      color: white;
-      -webkit-text-stroke-color: black;
-      -webkit-text-stroke-width: 1px;
-    }
-
-    .start-button2 {
-      margin-top: 24px;
-      text-align: center;
-      width: 325px;
-      height: 80px;
-      background-color: rgb(255, 164, 178);
-      border-style: none;
-      border-top-right-radius: 30px;
-      border-bottom-right-radius: 30px;
-      border-width: 1px;
-      cursor: pointer;
-      font-family: Arial, Helvetica, sans-serif;
-      font-size: 70px;
-      padding-bottom: 90px;
-
-      color: white;
-      -webkit-text-stroke-color: black;
-      -webkit-text-stroke-width: 1px;
-    }
-  </style>
-
-
-
-
-
   <head>
-    <title>
-      KittyDoro
-    </title>
+    <link rel="stylesheet" href="studystyle.css">
+    <link href='https://fonts.googleapis.com/css?family=Agbalumo' rel='stylesheet'>
+    <title>StudyTimer</title>
   </head>
   <body>
-    
-    <div>
-      <div class="upper-title">
-        <h1 class="main-name">
-          <a href="study-timer.html"; style="text-decoration: none; color: inherit;">kitty<u>doro</u></a>
+    <h1 id="heading">
+      <b>Study <u>Timer</u></b>
+    </h1>
+    <div class="order">
+      <hr>
+      <div class="timer">
+        <h1 id="timer-style">
+          30:00
         </h1>
       </div>
-      <div class="study-box"; style="display: flex; flex-direction: column;">
-        <div class="st-box-title";>
-          <b>StudyTimer</b>
-        </div>
-        <div class="timer-counter"; id="only-counter">
-          30:00
-        </div>
-        <div class="study-buttons"; style="display: flex; flex-direction: row;">
-          <div>
-            <button class="start-button"; onclick="startCountdown(1799); changeText();" id="start-b">
-              study
-            </button>
-          </div>
-          <div>
-            <button class="start-button2">
-              reset
-            </button>
-          </div>
-        </div>
-
+      <hr>
+      <div class="container-elements">
+        <input id="countInput" class="countInputC" placeholder="study minutes" autocomplete="off">
+        <button id="startButton" class="startButtonC">start</button>
       </div>
     </div>
-
-
-
-    <script>
-      let minutes = 30
-      let seconds = 0
-      let init = 0
-      
-      function changeText() {
-        init ++
-        if (init == 1) document.getElementById("start-b").textContent = 'pause';
-        if (init % 2 == 0) document.getElementById("start-b").textContent = 'study', init = 0;
-      }
-      
-      function startCountdown(seconds) {
-  
-  
-  let counter = seconds;
     
-  const interval = setInterval(() => {
-    console.log(counter);
-    minutes = Math.trunc(counter/60)
-    seconds = counter % 60
-    if (seconds > 9)
-    document.getElementById("only-counter").textContent = minutes + ":" + seconds;
-  else document.getElementById("only-counter").textContent = minutes + ":" + "0" + seconds;
-    console.log(minutes)
-    console.log(seconds)
-    counter--;
-      
-    if (counter < 0 ) {
-      clearInterval(interval);
-      console.log('Ding!');
-    }
-  }, 1000);
-}
-
-      
-    </script>
+    <script src="jsattempt.js" defer></script>
   </body>
 </html>
