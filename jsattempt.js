@@ -6,6 +6,8 @@ let start = false
 let theInterval = null
 let placeholder0 = null
 
+document.getElementById("computercat").src = "omgyay.gif"
+
 document.getElementById("startButton").disabled = true;
 document.getElementById("timer-style").addEventListener("click", function(event) {
   document.getElementById("countInput").focus();
@@ -41,6 +43,8 @@ document.getElementById("countInput").addEventListener('input', function(event) 
 document.getElementById("startButton").addEventListener('click', function(event) {
   switch (start){
     case false:
+      document.getElementById("computercat").style.opacity = 1;
+      document.getElementById("computercat").src = "cute2nd.gif"
       askingMinutes *= 60
       countdown(askingMinutes)
       start = true;
@@ -55,6 +59,8 @@ document.getElementById("startButton").addEventListener('click', function(event)
     case true:
       console.log('bam')
       document.getElementById("timer-style").textContent = "00" + ":" + "00"
+      document.getElementById("computercat").src = "omgyay.gif"
+      document.getElementById("webTitle").innerHTML = "kittydoro - pomodoro"
       start = false;
       document.getElementById("startButton").textContent = 'start';
       onoroff = 0
@@ -98,9 +104,12 @@ function countdown(count) {
       else {
         if (document.getElementById("countInput").value != "great work!")
           document.getElementById("countInput").value = "studying."
+
       }
       if (count <= 0) {
         clearInterval(theInterval)
+        document.getElementById("computercat").style.opacity = 1; /* change this */
+        document.getElementById("computercat").src = "adorableahah.gif"
         document.getElementById("countInput").value = " great work!"
         document.getElementById("startButton").textContent = "again?"
       }
