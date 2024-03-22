@@ -41,14 +41,15 @@ body {
  width: 600px;
  display: flex;
  flex-direction: row;
- height: 50px;
+ height: 120px;
  justify-content: center;
- margin-top: 60px;
+ margin-top: 0px;
 
  
 }
 
 .startButtonC {
+  margin-top: 70px;
   font-size: 30px;
   cursor: pointer;
   width: 200px;
@@ -65,11 +66,22 @@ body {
 
 .colorWheel {
   cursor: pointer;
+  
+}
+
+#computercat {
+  margin-right: 20px;
+  opacity: 1;
+  transition: opacity 0.25s ease-in, src 0.25s ease-in;
 }
 
 .startButtonC:hover {
   letter-spacing: 1px;
   transform: scale(1.05);
+}
+
+.startButtonC:active {
+  transform: scale(1.1)
 }
 
 .no-select {
@@ -81,6 +93,7 @@ body {
 
 
 .countInputC {
+  margin-top: 70px;
   border-radius: 50px;
   font-size: 30px;
   width: 200px;
@@ -121,3 +134,4 @@ input.no-select, img.no-select {
   -ms-user-select: none; /* Internet Explorer/Edge */
   user-select: none; /* Standard syntax */
 }
+
