@@ -5,6 +5,9 @@ let askingMinutes = ""
 let start = false
 let theInterval = null
 let placeholder0 = null
+let pause = false
+let buttonin = false
+let countC = null
 
 document.getElementById("computercat").src = "omgyay.gif"
 
@@ -39,7 +42,6 @@ document.getElementById("countInput").addEventListener('input', function(event) 
 }) 
 
 
-
 document.getElementById("startButton").addEventListener('click', function(event) {
   switch (start){
     case false:
@@ -48,15 +50,28 @@ document.getElementById("startButton").addEventListener('click', function(event)
       askingMinutes *= 60
       countdown(askingMinutes)
       start = true;
-      document.getElementById("startButton").textContent = 'reset';
-      onoroff = 1
-      document.getElementById("countInput").value = "studying"
-      document.getElementById("countInput").disabled = true;
-      document.getElementById("timer-style").style.opacity = 1;
-      document.getElementById("heading").style.opacity = 0.8;
-      document.getElementById("countInput").style.opacity = 0.8;  
+      document.getElementById("startButton").textContent = 'reset'
+      document.getElementById("countInput").setAttribute('type', 'button');
+      if (buttonin == false) {
+        buttonlistener()
+        buttonin = true
+      }
+      if (document.getElementById("countInput").type === 'button') {
+        document.getElementById("countInput").style.cursor = 'pointer';
+        document.getElementById("countInput").className = 'startButtonC';
+        document.getElementById("countInput").value = "pause";
+        document.getElementById("timer-style").style.opacity = 1;
+        document.getElementById("heading").style.opacity = 0.8;
+        document.getElementById("countInput").style.opacity = 1;
+        document.getElementById("countInput").disabled = false;
+      }
+
       break;
     case true:
+      document.getElementById("countInput").setAttribute('type', 'text');
+      document.getElementById("countInput").classList.remove('startButtonC');
+      document.getElementById("countInput").classList.add('countInputC', 'no-select');
+      document.getElementById("countInput").style.cursor = 'auto';
       console.log('bam')
       document.getElementById("timer-style").textContent = "00" + ":" + "00"
       document.getElementById("computercat").src = "omgyay.gif"
@@ -71,11 +86,15 @@ document.getElementById("startButton").addEventListener('click', function(event)
       document.getElementById("heading").style.opacity = 1;
       document.getElementById("countInput").style.opacity = 1;
       document.getElementById("timer-style").style.opacity = 0.8;
+      document.getElementById("countInput") /* change to input */
+
       
       askingMinutes = 0
       break;
   }
 })
+
+
 
 
 document.getElementById('colorWheel').addEventListener('change', function() {
@@ -84,11 +103,38 @@ document.getElementById('colorWheel').addEventListener('change', function() {
 
 document.getElementById('colorWheel').value = '#FF8791';
 
-
+function buttonlistener() {
+  document.getElementById("countInput").addEventListener('click', switcherP)
+}
+function switcherP() {
+  if (document.getElementById("countInput").type == 'button') {
+    console.log('srt')
+    let currentText = document.getElementById("countInput").value;
+    console.log(currentText)
+    switch(currentText) {
+      case 'resume':
+        pause = false
+        break;
+      case 'pause':
+        pause = true
+        break;
+    }
+    switch(pause) {
+      case false:
+        document.getElementById("countInput").value = "pause";
+        countdown(askingMinutes)
+        break;
+      case true:
+        clearInterval(theInterval);
+        document.getElementById("countInput").value = "resume";
+        break;
+  }}}
 function countdown(count) {
+  
   if (count > 0 && onoroff != 1) {
     theInterval = setInterval(function() {
       count--;
+      askingMinutes = count;
       if (count % 60 >= 10) {
         document.getElementById("timer-style").textContent = Math.trunc(count/60) + ":" + count % 60;
         document.getElementById("webTitle").innerHTML = Math.trunc(count/60) + ":" + count % 60 + " - kittydoro"
@@ -98,14 +144,7 @@ function countdown(count) {
         document.getElementById("webTitle").innerHTML = Math.trunc(count/60) + ":" +"0" + count % 60 + " - kittydoro";
       }
       console.log(count);
-      if (document.getElementById("countInput").value.length <= 11) {
-        document.getElementById("countInput").value += "."
-      }
-      else {
-        if (document.getElementById("countInput").value != "great work!")
-          document.getElementById("countInput").value = "studying."
 
-      }
       if (count <= 0) {
         clearInterval(theInterval)
         document.getElementById("computercat").style.opacity = 1; /* change this */
