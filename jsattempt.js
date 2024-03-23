@@ -122,11 +122,13 @@ function switcherP() {
     switch(pause) {
       case false:
         document.getElementById("countInput").value = "pause";
+        document.getElementById("computercat").src = "cute2nd.gif"
         countdown(askingMinutes)
         break;
       case true:
         clearInterval(theInterval);
         document.getElementById("countInput").value = "resume";
+        document.getElementById("computercat").src = "omgcute.gif"
         break;
   }}}
 function countdown(count) {
