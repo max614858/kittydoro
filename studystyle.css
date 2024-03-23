@@ -8,6 +8,7 @@ h1 {
   font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
   color: white;
   cursor: pointer;
+  padding-right: 12px; /* scale this with the color boxes */
 }
 
 .grouphead {
@@ -64,6 +65,14 @@ body {
   border: none;
 }
 
+.settingsbutton {
+  font-family: Arial, Helvetica, sans-serif;
+  writing-mode: vertical-rl;
+  padding-left: 100px;
+  margin-right:100vw;
+  /* come back to */
+}
+
 .colorWheel {
   cursor: pointer;
   
@@ -91,6 +100,12 @@ body {
   user-select: none; /* Non-prefixed version, currently supported by Chrome, Opera and Edge */
 }
 
+#colorcontainers {
+  padding-top: 65px;
+  padding-left: 0px;
+  display: flex;
+  flex-direction: column;
+}
 
 .countInputC {
   margin-top: 70px;
@@ -134,4 +149,3 @@ input.no-select, img.no-select {
   -ms-user-select: none; /* Internet Explorer/Edge */
   user-select: none; /* Standard syntax */
 }
-
