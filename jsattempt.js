@@ -1,4 +1,5 @@
 
+
 let onoroff = 0
 
 let askingMinutes = ""
@@ -8,6 +9,42 @@ let placeholder0 = null
 let pause = false
 let buttonin = false
 let countC = null
+let totalTime = 0
+let statsVisible = false
+let currentColor = [255, 135, 145]
+let darkenedColor = '#FF8791'
+let informationBox = document.getElementById("study-info-box")
+totalTime = localStorage.getItem('studytime')
+
+localStorage.setItem('studytime', totalTime);
+document.getElementById('time-count').textContent = Math.trunc(totalTime / 3600) + 'hrs ' + (totalTime / 60) + 'min';
+
+
+
+function revealStats() {
+  switch(statsVisible) {
+    case false:
+      console.log(currentColor[1])
+      informationBox.style.backgroundColor = '#ff8791';
+
+      statsVisible = true
+      informationBox.style.opacity = 1;
+      informationBox.style.width = '200px';
+      informationBox.style.height = '300px';
+    
+
+
+      break;
+    case true:
+      statsVisible = false
+      informationBox.style.opacity = 0
+      informationBox.style.width = '20px';
+      informationBox.style.height = '30px';
+
+  }
+}
+
+document.getElementById('stats-buttonID').addEventListener("click", revealStats)
 
 document.getElementById("computercat").src = "omgyay.gif"
 
@@ -64,6 +101,7 @@ document.getElementById("startButton").addEventListener('click', function(event)
         document.getElementById("heading").style.opacity = 0.8;
         document.getElementById("countInput").style.opacity = 1;
         document.getElementById("countInput").disabled = false;
+        
       }
 
       break;
@@ -99,6 +137,9 @@ document.getElementById("startButton").addEventListener('click', function(event)
 
 document.getElementById('colorWheel').addEventListener('change', function() {
   document.getElementById("mainbody").style.backgroundColor = this.value;
+  document.getElementById('study-info-box').style.backgroundColor = this.value;
+  
+
 });
 
 document.getElementById('colorWheel').value = '#FF8791';
@@ -137,6 +178,7 @@ function countdown(count) {
     theInterval = setInterval(function() {
       count--;
       askingMinutes = count;
+      totalTime ++
       if (count % 60 >= 10) {
         document.getElementById("timer-style").textContent = Math.trunc(count/60) + ":" + count % 60;
         document.getElementById("webTitle").innerHTML = Math.trunc(count/60) + ":" + count % 60 + " - kittydoro"
@@ -153,6 +195,10 @@ function countdown(count) {
         document.getElementById("computercat").src = "adorableahah.gif"
         document.getElementById("countInput").value = " great work!"
         document.getElementById("startButton").textContent = "again?"
+        document.getElementById("countInput").disabled = true;
+        localStorage.setItem('studytime', totalTime)
+        
+        document.getElementById('time-count').textContent = Math.trunc(totalTime / 3600) + 'hrs ' + (totalTime / 60) + 'min';
       }
 
     }, 1000);
