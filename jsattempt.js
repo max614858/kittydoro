@@ -11,13 +11,18 @@ let buttonin = false
 let countC = null
 let totalTime = 0
 let statsVisible = false
-let currentColor = [255, 135, 145]
-let darkenedColor = '#FF8791'
+let currentColor = document.getElementById('colorWheel').value
 let informationBox = document.getElementById("study-info-box")
+let toConfirm = true
+let waitLimit = 4
+let waitCount = 0
+let waitFunction = null
+let initColor
 totalTime = localStorage.getItem('studytime')
+totalTime = 7580
 
 localStorage.setItem('studytime', totalTime);
-document.getElementById('time-count').textContent = Math.trunc(totalTime / 3600) + 'hrs ' + (totalTime / 60) + 'min';
+document.getElementById('time-count').textContent = Math.trunc(totalTime / 3600) + 'hrs ' + (totalTime % 60) + 'min';
 
 
 
@@ -31,17 +36,55 @@ function revealStats() {
       informationBox.style.opacity = 1;
       informationBox.style.width = '200px';
       informationBox.style.height = '300px';
-    
-
+      document.getElementById('study-info-box').style.backgroundColor = currentColor
 
       break;
     case true:
       statsVisible = false
       informationBox.style.opacity = 0
-      informationBox.style.width = '20px';
-      informationBox.style.height = '30px';
+      informationBox.style.width = '200px';
+      informationBox.style.height = '300px';
+      document.getElementById('study-info-box').style.backgroundColor = currentColor
+
+
+      
 
   }
+}
+
+
+document.getElementById('clear-time').addEventListener('click', resetTotalTime)
+
+
+function resetTotalTime() {
+  switch(toConfirm) {
+    case true:
+      document.getElementById('clear-time').textContent = "confirm reset?"
+      document.getElementById('clear-time').style.marginLeft = '53px';
+      toConfirm = false
+      waitFunction = setInterval(function() {
+        waitCount ++
+        if (waitCount >= waitLimit) {
+          document.getElementById('clear-time').textContent = "reset";
+          document.getElementById('clear-time').style.marginLeft = '80px';
+          toConfirm = true
+          waitCount = 0
+          clearInterval(waitFunction)
+          
+        }
+      }, 1000)
+      break;
+    case false:
+      totalTime = 0;
+      document.getElementById('time-count').textContent = Math.trunc(totalTime / 3600) + 'hrs ' + (totalTime % 60) + 'min';
+      document.getElementById('clear-time').textContent = "reset";
+      document.getElementById('clear-time').style.marginLeft = '80px';
+      toConfirm = true;
+      clearInterval(waitFunction)
+      break;
+
+  } 
+    
 }
 
 document.getElementById('stats-buttonID').addEventListener("click", revealStats)
@@ -133,14 +176,23 @@ document.getElementById("startButton").addEventListener('click', function(event)
 })
 
 
+function adjust(color, amount) {
+  return '#' + color.replace(/^#/, '').replace(/../g, color => ('0'+Math.min(255, Math.max(0, parseInt(color, 16) + amount)).toString(16)).substr(-2));
+}
+
 
 
 document.getElementById('colorWheel').addEventListener('change', function() {
   document.getElementById("mainbody").style.backgroundColor = this.value;
   document.getElementById('study-info-box').style.backgroundColor = this.value;
-  
+  currentColor = adjust(document.getElementById('colorWheel').value, -12)
+  document.getElementById('study-info-box').style.backgroundColor = currentColor
 
 });
+
+let event = new Event('change');
+document.getElementById('colorWheel').dispatchEvent(event);
+
 
 document.getElementById('colorWheel').value = '#FF8791';
 
@@ -198,7 +250,7 @@ function countdown(count) {
         document.getElementById("countInput").disabled = true;
         localStorage.setItem('studytime', totalTime)
         
-        document.getElementById('time-count').textContent = Math.trunc(totalTime / 3600) + 'hrs ' + (totalTime / 60) + 'min';
+        document.getElementById('time-count').textContent = Math.trunc(totalTime / 3600) + 'hrs ' + (totalTime % 60) + 'min';
       }
 
     }, 1000);
