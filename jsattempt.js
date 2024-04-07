@@ -53,7 +53,11 @@ breakbutton.addEventListener('click', function() {
         if (onbreak) {
           breaktime --;
           if (breaktime >= 10) {
-          timerstyle.textContent = Math.floor(breaktime/60) + ":" + breaktime % 60;
+            if ((breaktime % 60) >= 10){
+          timerstyle.textContent = Math.floor(breaktime/60) + ":" + breaktime % 60;}
+          else {timerstyle.textContent = Math.floor(breaktime/60) + ":" + "0" + breaktime % 60;
+        }
+
           } else {
             timerstyle.textContent = Math.floor(breaktime/60) + ":" + "0" + breaktime % 60;
           }
