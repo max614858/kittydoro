@@ -65,7 +65,7 @@ rainpng.addEventListener('click', function() {
       }
     }
     animate()
-    rain.currentTime = 505
+    rain.currentTime = 0
     rain.play()
     rainon = false
     break;
