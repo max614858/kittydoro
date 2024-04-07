@@ -14,6 +14,8 @@ h1 {
   padding-right: 12px; /* scale this with the color boxes */
 }
 
+
+
 h3 {
   text-align: center;
   color: white;
@@ -61,12 +63,18 @@ h2 {
   opacity: 80%;
   
 }
-body {
+
+#bigdiv {
   display: flex;
-  flex-direction: column;
-  background-color: #ff8791;
-  margin: 0rem;
   align-items: center;
+  flex-direction: column;
+  min-height: 100vh;
+}
+body {
+
+  background-color: #a7b0ff;
+  margin: 0rem;
+
 }
 
 #time-header {
@@ -123,6 +131,7 @@ body {
 
 .colorWheel {
   cursor: pointer;
+  color: rgb(167, 176, 255)
   
 }
 
@@ -208,7 +217,7 @@ input.no-select, img.no-select {
   border-width: 2px;
   border-style: solid;
   position: absolute;
-  margin-left: 600px;
+  margin-left: 630px;
   margin-top: 516px;
   transition: opacity 0.3s ease-out, width 0.15s ease-out, height 0.15s ease-out;
 }

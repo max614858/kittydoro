@@ -21,13 +21,67 @@ let initColor
 let startFnc
 let canvas = document.querySelector('canvas')
 let c = canvas.getContext('2d')
+canvas.height = window.innerHeight;
+canvas.width = window.innerWidth
 localStorage.getItem('studytime') ? totalTime = Number(localStorage.getItem('studytime')) :  Number(localStorage.setItem('studytime', 0))
 totalTime = Number(localStorage.getItem('studytime'))
 
 document.getElementById('time-count').textContent = (Math.floor(totalTime / 3600)) + 'hrs ' + Math.floor((totalTime % 3600) / 60) + 'mins'
 
+//break functionality
+let countinput = document.getElementById('countInput');
+let breakbutton = document.getElementById('breakbutton');
+let startbutton = document.getElementById('startButton');
+let crazyfrog = document.getElementById('crazyfrog')
+let onbreak = false;
+breakbutton.addEventListener('click', function() {
+  switch (onbreak){
+    case false:
+
+      statsclick.play();
+
+      countinput.placeholder = "break time...";
+      startbutton.innerText = "nice!";
+      breakbutton.innerText = "stop";
+      timerstyle.innerText = "5:00"
 
 
+      startbutton.disabled = true;
+      countinput.disabled = true;
+      onbreak = true;
+
+      breakinterval = setInterval(function() {
+        if (onbreak) {
+          breaktime --;
+          timerstyle.textContent = Math.floor(breaktime/60) + ":" + breaktime % 60;
+        }
+        
+      }, 1000)
+      breakinterval.addEventListener('finished', function() {
+        crazyfrog.play()
+      })
+
+      break;
+
+    case true:
+
+      statsclick.play()
+
+      countinput.placeholder = "study minutes";
+      startbutton.innerText = "start";
+      breakbutton.innerText = "break";
+      timerstyle.innerText = "30:00";
+
+
+      startbutton.disabled = true;
+      countinput.disabled = false;
+
+      breaktime = 300
+      clearInterval(breakinterval)
+
+      onbreak = false;
+      break;
+  }})
 
 // non-sht code
 let rain = document.getElementById('rain')
@@ -193,10 +247,11 @@ document.getElementById("countInput").addEventListener('input', function(event) 
 }) 
 
 
-
+let started = false
 startFnc = function simulatedFunc() {
   switch (start){
     case false:
+      breakbutton.disabled = true
       clickstart.play()
       document.getElementById("computercat").style.opacity = 1;
       document.getElementById("computercat").src = "omgyay.gif"
@@ -223,6 +278,7 @@ startFnc = function simulatedFunc() {
 
       break;
     case true:
+      breakbutton.disabled = false
       clickstart.play()
       document.getElementById("countInput").setAttribute('type', 'text');
       document.getElementById("countInput").classList.remove('startButtonC');
@@ -271,7 +327,7 @@ let event = new Event('change');
 document.getElementById('colorWheel').dispatchEvent(event);
 
 
-document.getElementById('colorWheel').value = '#FF8791';
+document.getElementById('colorWheel').value = '#a7b0ff';
 
 function buttonlistener() {
   document.getElementById("countInput").addEventListener('click', switcherP)
@@ -302,40 +358,43 @@ function switcherP() {
         break;
   }}}
 function countdown(count) {
-  
-  if (count > 0 && onoroff != 1) {
-    theInterval = setInterval(function() {
-      count--;
-      askingMinutes = count;
-      totalTime ++
-      localStorage.setItem('studytime', totalTime)
-      document.getElementById('time-count').textContent = (Math.floor(totalTime / 3600)) + 'hrs ' + Math.floor((totalTime % 3600) / 60) + 'mins'
-      if (count % 60 >= 10) {
-        document.getElementById("timer-style").textContent = Math.trunc(count/60) + ":" + count % 60;
-        document.getElementById("webTitle").innerHTML = Math.trunc(count/60) + ":" + count % 60 + " - kittydoro"
-      }
-      else {
-        document.getElementById("timer-style").textContent = Math.trunc(count/60) + ":" + "0" + count % 60;
-        document.getElementById("webTitle").innerHTML = Math.trunc(count/60) + ":" +"0" + count % 60 + " - kittydoro";
-      }
-
-      if (count <= 0) {
-        finishingbell.play()
+  if (!onbreak) {
+    if (count > 0 && onoroff != 1) {
+      theInterval = setInterval(function() {
+        count--;
+        askingMinutes = count;
+        totalTime ++
         localStorage.setItem('studytime', totalTime)
         document.getElementById('time-count').textContent = (Math.floor(totalTime / 3600)) + 'hrs ' + Math.floor((totalTime % 3600) / 60) + 'mins'
-  
-        clearInterval(theInterval)
-        document.getElementById("computercat").style.opacity = 1; /* change this */
-        document.getElementById("computercat").src = "adorableahah.gif"
-        document.getElementById("countInput").value = " great work!"
-        document.getElementById("startButton").textContent = "again?"
-        document.getElementById("countInput").disabled = true;
-      }
+        if (count % 60 >= 10) {
+          document.getElementById("timer-style").textContent = Math.trunc(count/60) + ":" + count % 60;
+          document.getElementById("webTitle").innerHTML = Math.trunc(count/60) + ":" + count % 60 + " - kittydoro"
+        }
+        else {
+          document.getElementById("timer-style").textContent = Math.trunc(count/60) + ":" + "0" + count % 60;
+          document.getElementById("webTitle").innerHTML = Math.trunc(count/60) + ":" +"0" + count % 60 + " - kittydoro";
+        }
 
-    }, 1000);
-  }
+        if (count <= 0) {
+          finishingbell.play()
+          localStorage.setItem('studytime', totalTime)
+          document.getElementById('time-count').textContent = (Math.floor(totalTime / 3600)) + 'hrs ' + Math.floor((totalTime % 3600) / 60) + 'mins'
+    
+          clearInterval(theInterval)
+          document.getElementById("computercat").style.opacity = 1; /* change this */
+          document.getElementById("computercat").src = "adorableahah.gif"
+          document.getElementById("countInput").value = " great work!"
+          document.getElementById("startButton").textContent = "again?"
+          document.getElementById("countInput").disabled = true;
+        }
+
+      }, 1000);
+    }
+  } 
 }
-
+let breaktime = 300;
+let timerstyle = document.getElementById('timer-style');
+let breakinterval;
 
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
@@ -358,7 +417,7 @@ function createStar() {
   }
   this.move = function() {
     this.x -= (this.rand/3) * 7
-    this.y += (this.rand * 25)
+    this.y += ((0.5 < this.rand) ? 0.5 : 1) * 25
     if ((this.x - this.radius) > canvas.width) {
       this.x = 0 - this.radius
       this.rand = (Math.random() * 2) + 0.1
