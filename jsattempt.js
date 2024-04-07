@@ -82,7 +82,7 @@ rainpng.addEventListener('click', function() {
 
 
 rain.addEventListener('ended', function() {
-  this.currentTime = 25;
+  this.currentTime = 28;
   this.play();
 });
 
