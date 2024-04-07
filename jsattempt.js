@@ -34,17 +34,16 @@ let breakbutton = document.getElementById('breakbutton');
 let startbutton = document.getElementById('startButton');
 let crazyfrog = document.getElementById('crazyfrog')
 let onbreak = false;
+let breaktime = 300;
 breakbutton.addEventListener('click', function() {
   switch (onbreak){
     case false:
-
       statsclick.play();
 
       countinput.placeholder = "break time...";
       startbutton.innerText = "nice!";
       breakbutton.innerText = "stop";
       timerstyle.innerText = "5:00"
-
 
       startbutton.disabled = true;
       countinput.disabled = true;
@@ -53,15 +52,20 @@ breakbutton.addEventListener('click', function() {
       breakinterval = setInterval(function() {
         if (onbreak) {
           breaktime --;
+          if (breaktime >= 10) {
           timerstyle.textContent = Math.floor(breaktime/60) + ":" + breaktime % 60;
+          } else {
+            timerstyle.textContent = Math.floor(breaktime/60) + ":" + "0" + breaktime % 60;
+          }
+        }
+        if (breaktime == 0) {
+          crazyfrog.play()
+          breakbutton.click()
         }
         
       }, 1000)
-      breakinterval.addEventListener('finished', function() {
-        crazyfrog.play()
-      })
-
       break;
+      
 
     case true:
 
@@ -392,7 +396,6 @@ function countdown(count) {
     }
   } 
 }
-let breaktime = 300;
 let timerstyle = document.getElementById('timer-style');
 let breakinterval;
 
@@ -408,16 +411,15 @@ function createStar() {
   this.rand = (Math.random() * 2) + 0.1
   this.spawn = function() {
     c.beginPath()
-    c.ellipse(this.x, this.y, this.radius/3, this.radius, 0, 0, Math.PI*2, false)
+    c.ellipse(this.x, this.y, this.radius/5, this.radius * 2, 0, 0, Math.PI*2, false)
     c.fillStyle = 'rgba(120, 172, 255,' +`${this.opacity}` + ")"
-    c.shadowBlur = 70;
-    c.shadowColor = "white";
+    c.strokeStyle = "rgba(120,120,120,1)"
     c.fill()
     c.stroke()
   }
   this.move = function() {
     this.x -= (this.rand/3) * 7
-    this.y += ((0.5 < this.rand) ? 0.5 : 1) * 25
+    this.y += ((0.5 < this.rand) ? 0.5 : 1) * 50
     if ((this.x - this.radius) > canvas.width) {
       this.x = 0 - this.radius
       this.rand = (Math.random() * 2) + 0.1
