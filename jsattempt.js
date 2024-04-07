@@ -341,7 +341,7 @@ canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
 function createStar() {
-  this.radius = 3
+  this.radius = 6
   this.x = canvas.width * Math.random();
   this.y = canvas.height/1.1 * Math.random();
   this.opacity = 1
@@ -350,7 +350,7 @@ function createStar() {
   this.spawn = function() {
     c.beginPath()
     c.ellipse(this.x, this.y, this.radius/3, this.radius, 0, 0, Math.PI*2, false)
-    c.fillStyle = 'rgba(255,255,255,' +`${this.opacity}` + ")"
+    c.fillStyle = 'rgba(120, 172, 255,' +`${this.opacity}` + ")"
     c.shadowBlur = 70;
     c.shadowColor = "white";
     c.fill()
