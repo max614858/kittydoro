@@ -18,20 +18,89 @@ let waitLimit = 4
 let waitCount = 0
 let waitFunction = null
 let initColor
-totalTime = localStorage.getItem('studytime')
-totalTime = 7580
+let startFnc
+let canvas = document.querySelector('canvas')
+let c = canvas.getContext('2d')
+localStorage.getItem('studytime') ? totalTime = Number(localStorage.getItem('studytime')) :  Number(localStorage.setItem('studytime', 0))
+totalTime = Number(localStorage.getItem('studytime'))
 
-localStorage.setItem('studytime', totalTime);
-document.getElementById('time-count').textContent = Math.trunc(totalTime / 3600) + 'hrs ' + (totalTime % 60) + 'min';
+document.getElementById('time-count').textContent = (Math.floor(totalTime / 3600)) + 'hrs ' + Math.floor((totalTime % 3600) / 60) + 'mins'
 
 
+
+
+// non-sht code
+let rain = document.getElementById('rain')
+let rainpng = document.getElementById('rainpng')
+let rainon = true
+let starArray = []
+let handleResize = function() {
+  canvas.width = window.innerWidth
+  canvas.height = window.innerHeight
+  starArray = []
+  for (let i = 0; i < 25; i++) {
+    starArray.push(new createStar)
+  }
+} 
+
+rainpng.addEventListener('click', function() {
+  switch(rainon) {
+    case true:
+      
+      window.addEventListener('resize', handleResize)
+
+    starArray = []
+    for (let i = 0; i < 25; i++) {
+      starArray.push(new createStar)
+    }
+
+    function animate() {
+      requestAnimationFrame(animate)
+      c.clearRect(0,0, canvas.width, canvas.height)
+      
+      for (let i of starArray) {
+        i.spawn()
+        i.move()
+
+      }
+    }
+    animate()
+    rain.currentTime = 505
+    rain.play()
+    rainon = false
+    break;
+
+    case false:
+      window.removeEventListener('resize', handleResize)
+      starArray = []
+      rain.pause()
+      rainon = true
+      break;
+      }
+
+})
+
+
+rain.addEventListener('ended', function() {
+  this.currentTime = 25;
+  this.play();
+});
+
+
+
+
+document.body.style.overflowY = "auto";
+let finishingbell = document.getElementById('finishingbell')
+let clickstart = document.getElementById('clickstart')
+let mclick = document.getElementById('clickpause')
+let statsclick = document.getElementById('clickstats')
 
 function revealStats() {
   switch(statsVisible) {
     case false:
-      console.log(currentColor[1])
+    
       informationBox.style.backgroundColor = '#ff8791';
-
+      statsclick.play()
       statsVisible = true
       informationBox.style.opacity = 1;
       informationBox.style.width = '200px';
@@ -41,6 +110,7 @@ function revealStats() {
       break;
     case true:
       statsVisible = false
+      statsclick.play()
       informationBox.style.opacity = 0
       informationBox.style.width = '200px';
       informationBox.style.height = '300px';
@@ -76,7 +146,9 @@ function resetTotalTime() {
       break;
     case false:
       totalTime = 0;
-      document.getElementById('time-count').textContent = Math.trunc(totalTime / 3600) + 'hrs ' + (totalTime % 60) + 'min';
+      localStorage.setItem('studytime', totalTime)
+      document.getElementById('time-count').textContent = (Math.floor(totalTime / 3600)) + 'hrs ' + Math.floor((totalTime % 3600) / 60) + 'mins'
+
       document.getElementById('clear-time').textContent = "reset";
       document.getElementById('clear-time').style.marginLeft = '80px';
       toConfirm = true;
@@ -89,7 +161,7 @@ function resetTotalTime() {
 
 document.getElementById('stats-buttonID').addEventListener("click", revealStats)
 
-document.getElementById("computercat").src = "omgyay.gif"
+document.getElementById("computercat").src = "cuteslider.gif"
 
 document.getElementById("startButton").disabled = true;
 document.getElementById("timer-style").addEventListener("click", function(event) {
@@ -98,7 +170,6 @@ document.getElementById("timer-style").addEventListener("click", function(event)
 
 document.getElementById("countInput").addEventListener('input', function(event) {
   askingMinutes = (event.target.value)
-  console.log(askingMinutes)
   if (askingMinutes >= 9999) {
     askingMinutes = 9999
     document.getElementById("countInput").value = "9999"
@@ -122,11 +193,13 @@ document.getElementById("countInput").addEventListener('input', function(event) 
 }) 
 
 
-document.getElementById("startButton").addEventListener('click', function(event) {
+
+startFnc = function simulatedFunc() {
   switch (start){
     case false:
+      clickstart.play()
       document.getElementById("computercat").style.opacity = 1;
-      document.getElementById("computercat").src = "cute2nd.gif"
+      document.getElementById("computercat").src = "omgyay.gif"
       askingMinutes *= 60
       countdown(askingMinutes)
       start = true;
@@ -143,19 +216,21 @@ document.getElementById("startButton").addEventListener('click', function(event)
         document.getElementById("timer-style").style.opacity = 1;
         document.getElementById("heading").style.opacity = 0.8;
         document.getElementById("countInput").style.opacity = 1;
+        
         document.getElementById("countInput").disabled = false;
         
       }
 
       break;
     case true:
+      clickstart.play()
       document.getElementById("countInput").setAttribute('type', 'text');
       document.getElementById("countInput").classList.remove('startButtonC');
       document.getElementById("countInput").classList.add('countInputC', 'no-select');
       document.getElementById("countInput").style.cursor = 'auto';
-      console.log('bam')
+
       document.getElementById("timer-style").textContent = "00" + ":" + "00"
-      document.getElementById("computercat").src = "omgyay.gif"
+      document.getElementById("computercat").src = "cuteslider.gif"
       document.getElementById("webTitle").innerHTML = "kittydoro - pomodoro"
       start = false;
       document.getElementById("startButton").textContent = 'start';
@@ -172,8 +247,10 @@ document.getElementById("startButton").addEventListener('click', function(event)
       
       askingMinutes = 0
       break;
-  }
-})
+  }}
+  
+document.getElementById("startButton").addEventListener('click', startFnc)
+
 
 
 function adjust(color, amount) {
@@ -201,9 +278,7 @@ function buttonlistener() {
 }
 function switcherP() {
   if (document.getElementById("countInput").type == 'button') {
-    console.log('srt')
     let currentText = document.getElementById("countInput").value;
-    console.log(currentText)
     switch(currentText) {
       case 'resume':
         pause = false
@@ -215,11 +290,13 @@ function switcherP() {
     switch(pause) {
       case false:
         document.getElementById("countInput").value = "pause";
-        document.getElementById("computercat").src = "cute2nd.gif"
+        mclick.play()
+        document.getElementById("computercat").src = "omgyay.gif"
         countdown(askingMinutes)
         break;
       case true:
         clearInterval(theInterval);
+        mclick.play()
         document.getElementById("countInput").value = "resume";
         document.getElementById("computercat").src = "omgcute.gif"
         break;
@@ -231,6 +308,8 @@ function countdown(count) {
       count--;
       askingMinutes = count;
       totalTime ++
+      localStorage.setItem('studytime', totalTime)
+      document.getElementById('time-count').textContent = (Math.floor(totalTime / 3600)) + 'hrs ' + Math.floor((totalTime % 3600) / 60) + 'mins'
       if (count % 60 >= 10) {
         document.getElementById("timer-style").textContent = Math.trunc(count/60) + ":" + count % 60;
         document.getElementById("webTitle").innerHTML = Math.trunc(count/60) + ":" + count % 60 + " - kittydoro"
@@ -239,20 +318,58 @@ function countdown(count) {
         document.getElementById("timer-style").textContent = Math.trunc(count/60) + ":" + "0" + count % 60;
         document.getElementById("webTitle").innerHTML = Math.trunc(count/60) + ":" +"0" + count % 60 + " - kittydoro";
       }
-      console.log(count);
 
       if (count <= 0) {
+        finishingbell.play()
+        localStorage.setItem('studytime', totalTime)
+        document.getElementById('time-count').textContent = (Math.floor(totalTime / 3600)) + 'hrs ' + Math.floor((totalTime % 3600) / 60) + 'mins'
+  
         clearInterval(theInterval)
         document.getElementById("computercat").style.opacity = 1; /* change this */
         document.getElementById("computercat").src = "adorableahah.gif"
         document.getElementById("countInput").value = " great work!"
         document.getElementById("startButton").textContent = "again?"
         document.getElementById("countInput").disabled = true;
-        localStorage.setItem('studytime', totalTime)
-        
-        document.getElementById('time-count').textContent = Math.trunc(totalTime / 3600) + 'hrs ' + (totalTime % 60) + 'min';
       }
 
     }, 1000);
+  }
+}
+
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+function createStar() {
+  this.radius = 3
+  this.x = canvas.width * Math.random();
+  this.y = canvas.height/1.1 * Math.random();
+  this.opacity = 1
+
+  this.rand = (Math.random() * 2) + 0.1
+  this.spawn = function() {
+    c.beginPath()
+    c.ellipse(this.x, this.y, this.radius/3, this.radius, 0, 0, Math.PI*2, false)
+    c.fillStyle = 'rgba(255,255,255,' +`${this.opacity}` + ")"
+    c.shadowBlur = 70;
+    c.shadowColor = "white";
+    c.fill()
+    c.stroke()
+  }
+  this.move = function() {
+    this.x -= (this.rand/3) * 7
+    this.y += (this.rand * 25)
+    if ((this.x - this.radius) > canvas.width) {
+      this.x = 0 - this.radius
+      this.rand = (Math.random() * 2) + 0.1
+    }
+    if ((this.x + this.radius) < 0) {
+      this.x = canvas.width + this.radius
+      this.rand = (Math.random() * 2) + 0.1
+    }
+    if ((this.y - this.radius) > canvas.height) {
+      this.y = 0 - this.radius
+      this.rand = (Math.random() * 2) + 0.1
+    }
   }
 }

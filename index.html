@@ -1,13 +1,28 @@
 <!DOCTYPE html>
-<html>
+<html lang="en-US">
   <head>
+    <meta charset="UTF-8"/>
+    <title id="webTitle">kittydoro - pomodoro study timer</title>
+    <meta name="keywords" content="pomdoro, kittydoro, pomdoro study timer, cute pomodoro"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="pomodoro timer">
+    <meta name="author" content="kittydoro">
     <link rel="stylesheet" href="studystyle.css">
     <link href='https://fonts.googleapis.com/css?family=Agbalumo' rel='stylesheet'>
     <link rel="icon" type="image/png" sizes="32x32" href="kittydorofavicon.png">
-    <title id="webTitle">kittydoro - pomodoro</title>
+      <!-- external fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Bungee+Spice&family=Madimi+One&family=Short+Stack&display=swap" rel="stylesheet">
   </head>
   <body id="mainbody">
+    <audio style="display: none;" id="finishingbell"><source src="finishingbell.wav"></audio>
+    <audio style="display: none;" id="clickstart"><source src="click.wav"></audio>
+    <audio style="display: none;" id="clickpause"><source src="mclick.wav"></audio>
+    <audio style="display: none;" id="clickstats"><source src="statsclick.wav"></audio>
+    <audio style="display: none;" id="rain"><source src="rain.mp3""></audio>
     <div class="grouphead">
+      <input type="image" id="rainpng"src="rain.png" style="margin-top:105px;" width="100" height="96" draggable="false" class="no-select">
       <img width="100" height="96" src="cute.gif" id="cuteimg" class="cutest" draggable="false" class="no-select">
       <h1 id="heading" class="no-select">
         <b>kitty<u>doro</u></b>
@@ -20,10 +35,8 @@
           <u>Total Time</u>
         </h3>
         <button id="clear-time">reset</button>
-        <h3 id="time-count">
-
-        </h3>
-        <img src="love-you-roar-2.gif" style="padding-top: 10px; padding-left: 20px;" id="roar-gif">
+        <h3 id="time-count"></h3>
+        <img src="love-you-roar-2.gif" style="padding-top: 18px; padding-left: 20px;" id="roar-gif">
       </div>
     </div>
     <div class="order" class="no-select">
@@ -41,12 +54,12 @@
       </div>
       <hr>
       <div class="container-elements">
-        <img src="cute2nd.gif" width="120" height="120" draggable="false" class="no-select" id="computercat">
-        <input id="countInput" class="countInputC" class="no-select" placeholder="study minutes" autocomplete="off">
+        <img src="cuteslider.gif" width="120" height="120" draggable="false" class="no-select" id="computercat">
+        <input id="countInput" class="countInputC" class="no-select" placeholder="study minutes" autocomplete="off" autofocus="on">
         <button id="startButton" class="startButtonC" class="no-select">start</button>
       </div>
     </div>
-    
+    <canvas></canvas>
     <script src="jsattempt.js" defer></script>
   </body>
 </html>
