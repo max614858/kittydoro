@@ -374,6 +374,7 @@ rainpng.addEventListener('click', function() {
     case true:
       
     window.addEventListener('resize', handleResize)
+    happyboxcat.disabled = true;
 
 
     raindrops = []
@@ -401,6 +402,7 @@ rainpng.addEventListener('click', function() {
     break;
 
     case false:
+      happyboxcat.disabled = false
       window.removeEventListener('resize', handleResize)
       raindrops = []
       rain.pause()
@@ -485,3 +487,197 @@ function raindrop() {
   }
 
 };
+
+function dropball() {
+  this.radius = 20
+  this.x = canvas.width/2
+  this.y = 0
+  this.count = 0;
+  this.yvelocity = 0
+  this.ygravity = 1
+  this.cookie = false
+  this.drop = function() {
+    this.yvelocity += this.ygravity;
+    this.y += this.yvelocity;
+    if ((this.y + this.radius) > canvas.height) {
+      this.yvelocity *= -0.8
+      this.ygravity = 1
+      this.y = canvas.height - this.radius
+      this.count++
+      if (this.count < 10) {
+      mclick.play()
+    }
+      
+    }
+  }
+  this.draw = function() {
+    if (!this.cookie) {
+      c.beginPath()
+      c.arc(this.x,this.y,this.radius,0,Math.PI*2,false);
+      c.fillStyle = 'rgb(0,0,0)';
+      c.fill()
+      c.stroke() }
+    if (this.cookie) {
+      c.beginPath()
+      c.arc(this.x,this.y,this.radius,0,Math.PI*2,false);
+      c.fillStyle = 'rgb(255,204,153)';
+      c.fill()
+      c.stroke()
+      c.beginPath()
+      c.arc(this.x + 10, this.y, 3, 0, Math.PI*2, false);
+      c.fillStyle = 'rgb(40,40,40)';
+      c.fill()
+      c.stroke()
+      c.beginPath()
+      c.arc(this.x - 5, this.y + 1, 3, 0, Math.PI*2, false);
+      c.fillStyle = 'rgb(40,40,40)';
+      c.fill()
+      c.stroke()
+      c.beginPath()
+      c.arc(this.x - 2, this.y - 10, 3, 0, Math.PI*2, false);
+      c.fillStyle = 'rgb(40,40,40)';
+      c.fill()
+      c.stroke()
+      c.beginPath()
+      c.arc(this.x + 2, this.y + 10, 3, 0, Math.PI*2, false);
+      c.fillStyle = 'rgb(40,40,40)';
+      c.fill()
+      c.stroke()
+    }
+  }
+
+}
+
+let happyboxcat = document.getElementById('happyboxcat');
+let fatcat = document.getElementById('fatcat')
+let firstClick = true
+let ballArray;
+let newID;
+let fatmove = false;
+let fatval = -100;
+let fatleft;
+let fatwalk;
+let realizeCookie;
+let fatback;
+let scaleTransform = 1
+let fatExcite;
+let fatExUn = true;
+let excite;
+let afterExcite;
+let cookieSpeed = 1;
+
+function animate0() {
+  newID = requestAnimationFrame(animate0);
+  for (let i of ballArray) {
+    c.clearRect(0,0,canvas.width,canvas.height)
+    i.draw()
+    i.drop()
+  }
+  if (fatmove) {
+    fatval += 6
+    fatcat.style.left = String(fatval) + 'px';
+    if (fatval > ((window.innerWidth /2 )- 150)) {
+      fatmove = false;
+      setTimeout(function() {
+        fatback = true;
+        fatcat.style.transform = "scaleX(-1)";
+      },2000)
+      
+      clearInterval(fatwalk)
+      setTimeout(function() {
+        realizeCookie = true;
+        fatback = false;
+        ballArray[0].cookie = true;
+
+      }, 10000)
+    }
+  }
+  if (fatback) {
+    fatval --
+    fatcat.style.left = String(fatval) + 'px';
+  }
+  if (realizeCookie) {
+    fatcat.style.transform = "scaleX(1)";
+    fatval += 40
+    fatcat.style.left = String(fatval) + 'px';
+    if (fatval > ((window.innerWidth /2 )- 150)) {
+      realizeCookie = false
+      fatExcite = true;
+
+    }
+  }
+  if (fatExcite) {
+
+    excite = setInterval(function() {
+      switch (fatExUn) {
+        case true:
+          fatExUn = false;
+          fatcat.style.transform = "ScaleX(-1)";
+          break;
+        case false:
+          fatExUn = true;
+          fatcat.style.transform = "ScaleX(1)";
+          break;
+      }
+    }, 400)
+    fatExcite = false
+    setTimeout(function() {
+      afterExcite = true
+    }, 4000)
+    }
+  if (afterExcite) {
+    setTimeout(function() {
+      if (oncePlease) {
+        clearInterval(excite)
+        fatcat.style.transform = "ScaleX(1)";
+        cookieSpeed = 40
+        ballArray[0].x = (canvas.width/2) + 80
+        oncePlease = false
+      }
+    }, 2000)
+    if (cookieSpeed == 40) {
+      fatcat.style.transform = "ScaleX(1)";
+      fatcat.style.left = String(fatval += cookieSpeed) + 'px';
+      ballArray[0].x += cookieSpeed
+      console.log(ballArray[0].x)
+    if (fatval > canvas.width) {
+      fatval = -100
+    if (ballArray[0].x > canvas.width) {
+      ballArray[0].x = 80
+      console.log(ballArray[0].x)
+    }
+    runCount ++
+    if (runCount > 2) {
+      cancelAnimationFrame(newID);
+      happyboxcat.disabled = false;
+      rainpng.disabled = false;
+      runCount = 0;
+      oncePlease = true;
+      fatval = -100;
+      fatmove = false;
+      firstClick = true;
+      fatback = false;
+      afterExcite = false
+      fatExcite = false;
+      fatExUn = true
+      clearInterval(excite)
+    }
+    }
+    }
+  }
+  }
+let runCount = 0;
+let oncePlease = true
+
+happyboxcat.addEventListener('click', function() {
+  if (firstClick) {
+    ballArray = []
+    ballArray.push(new dropball)
+    rainpng.disabled = true
+    happyboxcat.disabled = true
+    animate0()
+    setTimeout(function() {
+      fatmove = true;
+    }, 4000)
+  }
+})
