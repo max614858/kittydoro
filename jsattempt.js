@@ -91,63 +91,6 @@ breakbutton.addEventListener('click', function() {
       break;
   }})
 
-// non-sht code
-let rain = document.getElementById('rain')
-let rainpng = document.getElementById('rainpng')
-let rainon = true
-let starArray = []
-let handleResize = function() {
-  canvas.width = window.innerWidth
-  canvas.height = window.innerHeight
-  starArray = []
-  for (let i = 0; i < 25; i++) {
-    starArray.push(new createStar)
-  }
-} 
-
-rainpng.addEventListener('click', function() {
-  switch(rainon) {
-    case true:
-      
-      window.addEventListener('resize', handleResize)
-
-    starArray = []
-    for (let i = 0; i < 25; i++) {
-      starArray.push(new createStar)
-    }
-
-    function animate() {
-      requestAnimationFrame(animate)
-      c.clearRect(0,0, canvas.width, canvas.height)
-      
-      for (let i of starArray) {
-        i.spawn()
-        i.move()
-
-      }
-    }
-    animate()
-    rain.currentTime = 0
-    rain.play()
-    rainon = false
-    break;
-
-    case false:
-      window.removeEventListener('resize', handleResize)
-      starArray = []
-      rain.pause()
-      rainon = true
-      break;
-      }
-
-})
-
-
-rain.addEventListener('ended', function() {
-  this.currentTime = 28;
-  this.play();
-});
-
 
 
 
@@ -406,35 +349,139 @@ let breakinterval;
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
-function createStar() {
-  this.radius = 6
-  this.x = canvas.width * Math.random();
-  this.y = canvas.height/1.1 * Math.random();
-  this.opacity = 1
 
-  this.rand = (Math.random() * 2) + 0.1
-  this.spawn = function() {
-    c.beginPath()
-    c.ellipse(this.x, this.y, this.radius/5, this.radius * 2, 0, 0, Math.PI*2, false)
-    c.fillStyle = 'rgba(120, 172, 255,' +`${this.opacity}` + ")"
-    c.strokeStyle = "rgba(120,120,120,1)"
-    c.fill()
-    c.stroke()
+
+
+
+
+// non-sht code
+let rain = document.getElementById('rain')
+let rainpng = document.getElementById('rainpng')
+let rainon = true
+let raindrops;
+let animationFrameId;
+let handleResize = function() {
+  canvas.width = window.innerWidth
+  canvas.height = window.innerHeight
+  raindrops = []
+  for (let i = 0; i < 100; i++) {
+    raindrops.push(new raindrop)
   }
-  this.move = function() {
-    this.x -= (this.rand/3) * 7
-    this.y += ((0.5 < this.rand) ? 0.5 : 1) * 50
-    if ((this.x - this.radius) > canvas.width) {
-      this.x = 0 - this.radius
-      this.rand = (Math.random() * 2) + 0.1
+} 
+
+rainpng.addEventListener('click', function() {
+  switch(rainon) {
+    case true:
+      
+    window.addEventListener('resize', handleResize)
+
+
+    raindrops = []
+    for (let i = 0; i < 100; i++) {
+      raindrops.push(new raindrop)
     }
-    if ((this.x + this.radius) < 0) {
-      this.x = canvas.width + this.radius
-      this.rand = (Math.random() * 2) + 0.1
+
+    cancelAnimationFrame(animationFrameId);
+
+    function animate() {
+      animationFrameId = requestAnimationFrame(animate);
+      c.clearRect(0,0,canvas.width,canvas.height);
+      for (let i of raindrops) {
+        i.draw()
+        i.fly()
+        i.transform()
+      }
+    
+      
     }
-    if ((this.y - this.radius) > canvas.height) {
-      this.y = 0 - this.radius
-      this.rand = (Math.random() * 2) + 0.1
+    animate();
+    rain.currentTime = 0
+    rain.play()
+    rainon = false
+    break;
+
+    case false:
+      window.removeEventListener('resize', handleResize)
+      raindrops = []
+      rain.pause()
+      rainon = true
+      
+
+      break;
+      }
+
+})
+
+
+rain.addEventListener('ended', function() {
+  this.currentTime = 28;
+  this.play();
+});
+
+
+
+function raindrop() {
+  this.x = Math.random() * canvas.width
+  this.y = -20000 * Math.random();
+  this.radius = 3;
+  this.velocitY = Math.random() * 5
+  this.gravity = Math.ceil(Math.random() * 3)
+  this.splatter = []
+  this.change = false
+  this.z = 0
+  this.count = 0
+
+  this.draw = function() {
+    if (!this.change) {
+      c.beginPath();
+      c.arc(this.x,this.y,this.radius,Math.PI*2,Math.PI,false);
+      c.moveTo(this.x - this.radius, this.y);
+      c.lineTo(this.x, this.y - 40);
+      c.lineTo(this.x + this.radius, this.y)
+
+      c.fillStyle = 'rgb(44, 142, 222)';
+      c.strokeStyle = 'rgba(0,0,0,0)'
+      c.fill();
+      c.stroke()
     }
   }
-}
+  this.fly = function() {
+    this.y += (this.velocitY);
+    this.velocitY += this.gravity;
+    console.log(this.velocitY)
+    this.x -=4
+    if (this.y > canvas.height) {
+      this.y = canvas.height;
+      this.change = true
+      this.velocitY *= -0.25
+      this.count ++
+      this.radius --
+
+    }
+  }
+  this.transform = function() {
+    if (this.change) {
+      c.beginPath();
+      c.arc(this.x*1.2,this.y,this.radius,Math.PI*2,0,false);
+      c.arc(this.x*0.2,this.y,this.radius,Math.PI*2,0,false);
+      c.arc(this.x*1.4,this.y,this.radius,Math.PI*2,0,false);
+      c.arc(this.x*2,this.y,this.radius,Math.PI*2,0,false);
+      c.arc(this.x*2.4,this.y,this.radius,Math.PI*2,0,false);
+      c.arc(this.x*1.8,this.y,this.radius,Math.PI*2,0,false);
+      this.x ++
+      if (this.count > 2) {
+        this.change = false
+        this.count = 0
+        this.radius = 3
+        this.x = Math.random() * canvas.width
+        this.y = -3000 * Math.random();
+      }
+
+      c.fillStyle = 'rgb(44, 142, 222)';
+      c.strokeStyle = 'rgba(0,0,0,0)'
+      c.fill();
+      c.stroke()
+    }
+  }
+
+};
