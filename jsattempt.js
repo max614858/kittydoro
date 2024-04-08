@@ -504,9 +504,6 @@ function dropball() {
       this.ygravity = 1
       this.y = canvas.height - this.radius
       this.count++
-      if (this.count < 10) {
-      mclick.play()
-    }
       
     }
   }
